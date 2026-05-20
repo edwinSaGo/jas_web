@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 Disallow: /assets/
-Sitemap: https://jastamposcreen.com/sitemap.xml
+Sitemap: https://jasimpresores.lat/sitemap.xml
