@@ -326,3 +326,46 @@ if ('loading' in HTMLImageElement.prototype) {
 }
 
 console.log('✅ JAS Tampo Screen Impresores | Site loaded successfully');
+
+
+/* ══════════════════════════════════════
+   13. POPUP DE BIENVENIDA — REALIDAD AUMENTADA
+   Aparece una vez por sesión, ~1.5s después de cargar
+══════════════════════════════════════ */
+(function () {
+  const overlay   = document.getElementById('ar-popup-overlay');
+  const closeBtn  = document.getElementById('ar-popup-close');
+  const skipBtn   = document.getElementById('ar-popup-skip');
+  if (!overlay) return;
+
+  const STORAGE_KEY = 'jasArPopupShown';
+
+  function openPopup() {
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closePopup() {
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    try { sessionStorage.setItem(STORAGE_KEY, '1'); } catch (e) { /* noop */ }
+  }
+
+  let alreadyShown = false;
+  try { alreadyShown = sessionStorage.getItem(STORAGE_KEY) === '1'; } catch (e) { /* noop */ }
+
+  if (!alreadyShown) {
+    setTimeout(openPopup, 1500);
+  }
+
+  closeBtn && closeBtn.addEventListener('click', closePopup);
+  skipBtn && skipBtn.addEventListener('click', closePopup);
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) closePopup();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay.classList.contains('open')) closePopup();
+  });
+})();
